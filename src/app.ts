@@ -1,5 +1,6 @@
-import express, { response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import authRoute from "./routes/authRoute";
+import { AppError } from "./utils/generalTypes";
 
 const app = express();
 
@@ -13,8 +14,6 @@ app.use("*", (req, res) => {
     message: "undefined route",
   });
 });
-
-// app.use(errorHandler);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => `listening on port ${port}`);
