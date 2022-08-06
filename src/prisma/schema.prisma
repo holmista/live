@@ -18,3 +18,8 @@ model User {
   passwordResetToken String?
   passwordResetAt DateTime?
 }
+
+model Room {
+  id Int @default(autoincrement()) @id
+  name String @unique
+}
