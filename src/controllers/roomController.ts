@@ -5,9 +5,14 @@ import { AppError } from "../utils/generalTypes";
 
 export const getRoom = async (req:Request, res:Response) => {
   try {
-    const { id } = req.params;
+    const { id, } = req.params;
     const room = await client.room.findUnique({
-      where: { id: Number(id) }
+      where: { id: Number(id) },
+      include: { Message: { include: { author: { select: { email: true } } } } }
+    });
+    res.status(200).json({
+      status: "success",
+      data: room
     });
     if (!room) throw new AppError("room not found", 404);
   } catch (err) {
@@ -53,11 +58,12 @@ export const createRoom = async (req:Request, res:Response) => {
           mesage: "the name already exists"
         });
       }
+    } else {
+      res.status(500).json({
+        status: "fail",
+        message: "unknown errow"
+      });
     }
-    res.status(500).json({
-      status: "fail",
-      message: "unknown errow"
-    });
   }
 };
 

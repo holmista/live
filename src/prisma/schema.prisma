@@ -6,20 +6,32 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model User {
-  id Int @default(autoincrement()) @id
-  email String @unique
-  password String
+  id                 Int       @id @default(autoincrement())
+  email              String    @unique
+  password           String
   passwordResetToken String?
-  passwordResetAt DateTime?
+  passwordResetAt    DateTime?
+  Message            Message[]
 }
 
 model Room {
-  id Int @default(autoincrement()) @id
-  name String @unique
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  Message Message[]
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  body      String   @unique
+  timestamp DateTime @default(now())
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  room      Room     @relation(fields: [roomId], references: [id])
+  roomId    Int
 }

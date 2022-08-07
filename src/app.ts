@@ -4,6 +4,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import authRoute from "./routes/authRoute";
 import roomRouter from "./routes/roomRoute";
+import messageRouter from "./routes/messageRoute";
 
 const app = express();
 const httpServer = createServer(app);
@@ -20,7 +21,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/room", roomRouter);
-
+app.use("/api/message", messageRouter);
 app.use("/api/auth", authRoute);
 
 app.use("*", (req, res) => {
